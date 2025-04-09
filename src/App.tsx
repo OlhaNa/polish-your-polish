@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Container } from "react-bootstrap";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import { getDictionary } from "./data/WordData";
 import Flashcards from "./pages/Flashcards";
@@ -26,27 +27,29 @@ const App = () => {
 
   return (
     <Router>
-      <Routes>
-        <Route
-          index
-          element={
-            <Home
-              dictionaryLoadingStatus={dictionaryLoadingStatus}
-              dictionary={dictionary}
-            />
-          }
-        />
-        <Route
-          path="/flashcards/:topic/:subtopic"
-          element={
-            <Flashcards
-              dictionaryLoadingStatus={dictionaryLoadingStatus}
-              dictionary={dictionary}
-            />
-          }
-        />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
+      <Container className="App">
+        <Routes>
+          <Route
+            index
+            element={
+              <Home
+                dictionaryLoadingStatus={dictionaryLoadingStatus}
+                dictionary={dictionary}
+              />
+            }
+          />
+          <Route
+            path="/flashcards/:topic/:subtopic"
+            element={
+              <Flashcards
+                dictionaryLoadingStatus={dictionaryLoadingStatus}
+                dictionary={dictionary}
+              />
+            }
+          />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </Container>
     </Router>
   );
 };

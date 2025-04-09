@@ -1,11 +1,7 @@
-import {
-  Dispatch,
-  ForwardRefExoticComponent,
-  RefAttributes,
-  SetStateAction,
-} from "react";
+import { Dispatch, SetStateAction } from "react";
 import { Button } from "react-bootstrap";
-import { Link, LinkProps } from "react-router-dom";
+import { Link } from "react-router-dom";
+import LinkTypeForButton from "../types/LinkTypeForButton";
 import Word from "../types/Word";
 import {
   chooseRandomItemExcluding,
@@ -87,12 +83,6 @@ const NextButton = ({
     </Button>
   );
 };
-
-// Need to add "symbol" to fix type mismatch in Button "as" prop.
-type LinkTypeForButton = ForwardRefExoticComponent<
-  LinkProps & RefAttributes<HTMLAnchorElement>
-> &
-  "symbol";
 
 const FinishButton = () => {
   return (

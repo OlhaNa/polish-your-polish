@@ -1,5 +1,7 @@
+import { Accordion, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Dictionary from "../types/Dictionary";
+import LinkTypeForButton from "../types/LinkTypeForButton";
 import LoadingStatus from "../types/LoadingStatus";
 
 interface HomeProps {
@@ -13,21 +15,31 @@ const Home = ({ dictionaryLoadingStatus, dictionary }: HomeProps) => {
       <h1 className="display-4">Polish your Polish</h1>
       <p className="lead">Practise your vocabulary on the go</p>
       <h2>Available topics</h2>
-      {dictionary &&
-        Object.entries(dictionary).map(([topic, subtopics]) => (
-          <>
-            <h3>{topic}</h3>
-            <ul>
-              {Object.keys(subtopics).map((subtopic) => (
-                <li>
-                  <Link to={`/flashcards/${topic}/${subtopic}`}>
-                    {subtopic}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </>
-        ))}
+      {dictionary && (
+        <Accordion>
+          {Object.entries(dictionary).map(([topic, subtopics]) => (
+            <Accordion.Item eventKey={topic}>
+              <Accordion.Header as="h3">{topic}</Accordion.Header>
+              <Accordion.Body>
+                <ul className="row g-3 list-unstyled">
+                  {Object.keys(subtopics).map((subtopic) => (
+                    <li className="col-6 col-sm-4">
+                      <Button
+                        as={Link as LinkTypeForButton}
+                        to={`/flashcards/${topic}/${subtopic}`}
+                        className="d-flex justify-content-center align-items-center"
+                        style={{ height: "6rem" }}
+                      >
+                        {subtopic}
+                      </Button>
+                    </li>
+                  ))}
+                </ul>
+              </Accordion.Body>
+            </Accordion.Item>
+          ))}
+        </Accordion>
+      )}
       {dictionaryLoadingStatus === "loading" && "Topics loading"}
       {dictionaryLoadingStatus === "error" &&
         "Couldn't load topics at this time"}
