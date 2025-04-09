@@ -1,77 +1,54 @@
-import { useMemo, useState } from "react";
-import { ProgressBar } from "react-bootstrap";
-import AdvanceButton from "./components/AdvanceButton";
-import TargetLanguageSelector from "./components/TargetLanguageSelector";
-import TargetWordInSourceLanguage from "./components/TargetWordInSourceLanguage";
-import WordOptionsInTargetLanguage from "./components/WordOptionsInTargetLanguage";
-import { words } from "./data/WordData";
-import Language from "./types/Language";
-import Word from "./types/Word";
-import { getShuffledArray } from "./utils/ArrayUtils";
-import { computeProgress } from "./utils/ProgressUtils";
+import { useEffect, useState } from "react";
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import { getDictionary } from "./data/WordData";
+import Flashcards from "./pages/Flashcards";
+import Home from "./pages/Home";
+import NotFound from "./pages/NotFound";
+import Dictionary from "./types/Dictionary";
+import LoadingStatus from "./types/LoadingStatus";
 import "./App.scss";
 
-function App() {
-  const shuffledWords = useMemo(() => getShuffledArray(words), []);
-  const [targetLanguage, setTargetLanguage] = useState<Language>("polish");
-  const [targetWordIndex, setTargetWordIndex] = useState<number>();
-  const targetWord = useMemo(
-    () =>
-      targetWordIndex !== undefined
-        ? shuffledWords[targetWordIndex]
-        : undefined,
-    [shuffledWords, targetWordIndex],
-  );
-  const [wordOptions, setWordOptions] = useState<Word[]>();
-  const [selectedWord, setSelectedWord] = useState<Word>();
-  const [isChecking, setChecking] = useState<boolean>(false);
+const App = () => {
+  const [dictionaryLoadingStatus, setDictionaryLoadingStatus] =
+    useState<LoadingStatus>("loading");
+  const [dictionary, setDictionary] = useState<Dictionary>();
+
+  useEffect(() => {
+    getDictionary()
+      .then((data) => {
+        setDictionary(data);
+        setDictionaryLoadingStatus("success");
+      })
+      .catch(() => {
+        setDictionaryLoadingStatus("error");
+      });
+  }, []);
 
   return (
-    <>
-      <TargetLanguageSelector
-        targetLanguage={targetLanguage}
-        setTargetLanguage={setTargetLanguage}
-      />
-
-      {targetWord !== undefined && wordOptions !== undefined && (
-        <>
-          <TargetWordInSourceLanguage
-            targetLanguage={targetLanguage}
-            targetWord={targetWord}
-          />
-
-          <WordOptionsInTargetLanguage
-            wordOptions={wordOptions}
-            targetLanguage={targetLanguage}
-            targetWord={targetWord}
-            selectedWord={selectedWord}
-            setSelectedWord={setSelectedWord}
-            isChecking={isChecking}
-          />
-        </>
-      )}
-
-      <AdvanceButton
-        shuffledWords={shuffledWords}
-        targetWordIndex={targetWordIndex}
-        setTargetWordIndex={setTargetWordIndex}
-        targetWord={targetWord}
-        setWordOptions={setWordOptions}
-        selectedWord={selectedWord}
-        setSelectedWord={setSelectedWord}
-        isChecking={isChecking}
-        setChecking={setChecking}
-      />
-
-      <ProgressBar
-        now={computeProgress(
-          targetWordIndex ?? 0,
-          isChecking,
-          shuffledWords.length,
-        )}
-      />
-    </>
+    <Router>
+      <Routes>
+        <Route
+          index
+          element={
+            <Home
+              dictionaryLoadingStatus={dictionaryLoadingStatus}
+              dictionary={dictionary}
+            />
+          }
+        />
+        <Route
+          path="/flashcards/:topic/:subtopic"
+          element={
+            <Flashcards
+              dictionaryLoadingStatus={dictionaryLoadingStatus}
+              dictionary={dictionary}
+            />
+          }
+        />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </Router>
   );
-}
+};
 
 export default App;
