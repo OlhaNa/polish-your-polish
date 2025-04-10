@@ -21,15 +21,20 @@ const WordOptionInTargetLanguage = ({
 }: WordOptionInTargetLanguageProps) => {
   return (
     <Button
+      size="lg"
       variant={
         isChecking && word === targetWord
           ? "success"
           : isChecking && word === selectedWord
             ? "danger"
-            : word === selectedWord
-              ? "info"
-              : "secondary"
+            : isChecking
+              ? "secondary"
+              : word === selectedWord
+                ? "primary"
+                : "info"
       }
+      className="d-flex justify-content-center align-items-center"
+      style={{ width: "8.75rem", height: "5rem" }}
       disabled={isChecking}
       onClick={() => {
         setSelectedWord(word);
@@ -56,16 +61,20 @@ const WordOptionsInTargetLanguage = ({
   setSelectedWord,
   isChecking,
 }: WordOptionsInTargetLanguageProps) => {
-  return wordOptions.map((word) => (
-    <WordOptionInTargetLanguage
-      word={word}
-      targetLanguage={targetLanguage}
-      targetWord={targetWord}
-      selectedWord={selectedWord}
-      setSelectedWord={setSelectedWord}
-      isChecking={isChecking}
-    />
-  ));
+  return (
+    <div className="d-flex justify-content-center gap-3 mt-3 mb-3">
+      {wordOptions.map((word) => (
+        <WordOptionInTargetLanguage
+          word={word}
+          targetLanguage={targetLanguage}
+          targetWord={targetWord}
+          selectedWord={selectedWord}
+          setSelectedWord={setSelectedWord}
+          isChecking={isChecking}
+        />
+      ))}
+    </div>
+  );
 };
 
 export default WordOptionsInTargetLanguage;

@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { ProgressBar } from "react-bootstrap";
+import { Card, ProgressBar } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import AdvanceButton from "../components/AdvanceButton";
 import TargetLanguageSelector from "../components/TargetLanguageSelector";
@@ -11,6 +11,7 @@ import LoadingStatus from "../types/LoadingStatus";
 import Word from "../types/Word";
 import { getShuffledArray } from "../utils/ArrayUtils";
 import { computeProgress } from "../utils/ProgressUtils";
+import { capitalise } from "../utils/WordUtils";
 import NotFound from "./NotFound";
 
 interface FlashcardsProps {
@@ -59,48 +60,70 @@ const Flashcards = ({
 
   return (
     <>
-      <TargetLanguageSelector
-        targetLanguage={targetLanguage}
-        setTargetLanguage={setTargetLanguage}
-      />
-
-      {targetWord !== undefined && wordOptions !== undefined && (
-        <>
-          <TargetWordInSourceLanguage
+      <h1>
+        {topic}: {subtopic}
+      </h1>
+      <Card>
+        <Card.Body>
+          <TargetLanguageSelector
             targetLanguage={targetLanguage}
-            targetWord={targetWord}
+            setTargetLanguage={setTargetLanguage}
           />
 
-          <WordOptionsInTargetLanguage
-            wordOptions={wordOptions}
-            targetLanguage={targetLanguage}
-            targetWord={targetWord}
-            selectedWord={selectedWord}
-            setSelectedWord={setSelectedWord}
-            isChecking={isChecking}
+          {targetWord !== undefined && wordOptions !== undefined && (
+            <>
+              <p className="mb-0">
+                Select the {capitalise(targetLanguage)} word for
+              </p>
+              <TargetWordInSourceLanguage
+                targetLanguage={targetLanguage}
+                targetWord={targetWord}
+              />
+
+              <WordOptionsInTargetLanguage
+                wordOptions={wordOptions}
+                targetLanguage={targetLanguage}
+                targetWord={targetWord}
+                selectedWord={selectedWord}
+                setSelectedWord={setSelectedWord}
+                isChecking={isChecking}
+              />
+            </>
+          )}
+
+          <div className="mb-2">
+            <AdvanceButton
+              shuffledWords={shuffledWords}
+              targetWordIndex={targetWordIndex}
+              setTargetWordIndex={setTargetWordIndex}
+              targetWord={targetWord}
+              setWordOptions={setWordOptions}
+              selectedWord={selectedWord}
+              setSelectedWord={setSelectedWord}
+              isChecking={isChecking}
+              setChecking={setChecking}
+            />
+          </div>
+
+          <p className="mb-1">
+            Progress:{" "}
+            {computeProgress(
+              targetWordIndex ?? 0,
+              isChecking,
+              shuffledWords.length,
+            )}
+            %
+          </p>
+
+          <ProgressBar
+            now={computeProgress(
+              targetWordIndex ?? 0,
+              isChecking,
+              shuffledWords.length,
+            )}
           />
-        </>
-      )}
-
-      <AdvanceButton
-        shuffledWords={shuffledWords}
-        targetWordIndex={targetWordIndex}
-        setTargetWordIndex={setTargetWordIndex}
-        targetWord={targetWord}
-        setWordOptions={setWordOptions}
-        selectedWord={selectedWord}
-        setSelectedWord={setSelectedWord}
-        isChecking={isChecking}
-        setChecking={setChecking}
-      />
-
-      <ProgressBar
-        now={computeProgress(
-          targetWordIndex ?? 0,
-          isChecking,
-          shuffledWords.length,
-        )}
-      />
+        </Card.Body>
+      </Card>
     </>
   );
 };

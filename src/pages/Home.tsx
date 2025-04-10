@@ -12,8 +12,8 @@ interface HomeProps {
 const Home = ({ dictionaryLoadingStatus, dictionary }: HomeProps) => {
   return (
     <>
-      <h1 className="display-4">Polish your Polish</h1>
-      <p className="lead">Practise your vocabulary on the go</p>
+      <h1>Polish your Polish</h1>
+      <p>Practise your vocabulary on the go</p>
       <h2>Available topics</h2>
       {dictionary && (
         <Accordion>

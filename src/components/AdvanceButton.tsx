@@ -20,6 +20,7 @@ const StartButton = ({
 }: StartButtonProps) => {
   return (
     <Button
+      size="lg"
       onClick={() => {
         const startIndex = 0;
         const firstTargetWord = shuffledWords[startIndex];
@@ -42,7 +43,11 @@ interface CheckButtonProps {
 }
 const CheckButton = ({ setChecking, selectedWord }: CheckButtonProps) => {
   return (
-    <Button onClick={() => setChecking(true)} disabled={!selectedWord}>
+    <Button
+      size="lg"
+      onClick={() => setChecking(true)}
+      disabled={!selectedWord}
+    >
       Check
     </Button>
   );
@@ -66,6 +71,7 @@ const NextButton = ({
 }: NextButtonProps) => {
   return (
     <Button
+      size="lg"
       onClick={() => {
         const nextIndex = targetWordIndex + 1;
         const nextTargetWord = shuffledWords[nextIndex];
@@ -86,7 +92,7 @@ const NextButton = ({
 
 const FinishButton = () => {
   return (
-    <Button as={Link as LinkTypeForButton} to="/">
+    <Button size="lg" as={Link as LinkTypeForButton} to="/">
       Finish
     </Button>
   );
