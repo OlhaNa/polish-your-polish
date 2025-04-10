@@ -1,4 +1,4 @@
-import { Accordion, Button } from "react-bootstrap";
+import { Accordion, Button, Spinner } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Dictionary from "../types/Dictionary";
 import LinkTypeForButton from "../types/LinkTypeForButton";
@@ -40,9 +40,15 @@ const Home = ({ dictionaryLoadingStatus, dictionary }: HomeProps) => {
           ))}
         </Accordion>
       )}
-      {dictionaryLoadingStatus === "loading" && "Topics loading"}
-      {dictionaryLoadingStatus === "error" &&
-        "Couldn't load topics at this time"}
+      {dictionaryLoadingStatus === "loading" && (
+        <Spinner animation="border" variant="primary" />
+      )}
+      {dictionaryLoadingStatus === "error" && (
+        <>
+          <h3>Couldn't load topics at this time.</h3>
+          <p>Please try refreshing the page.</p>
+        </>
+      )}
     </>
   );
 };

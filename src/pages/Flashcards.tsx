@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { Card, ProgressBar } from "react-bootstrap";
+import { Card, ProgressBar, Spinner } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import AdvanceButton from "../components/AdvanceButton";
 import TargetLanguageSelector from "../components/TargetLanguageSelector";
@@ -49,11 +49,16 @@ const Flashcards = ({
 
   if (!shuffledWords) {
     if (dictionaryLoadingStatus === "loading") {
-      return "Loading please wait!";
+      return <Spinner animation="border" variant="primary" />;
     }
 
     if (dictionaryLoadingStatus === "error") {
-      return "Error!  Please refresh.";
+      return (
+        <>
+          <h3>Couldn't load topic at this time.</h3>
+          <p>Please try refreshing the page.</p>
+        </>
+      );
     }
     return <NotFound />;
   }

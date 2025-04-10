@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Container } from "react-bootstrap";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import HomeButton from "./components/HomeButton";
 import { getDictionary } from "./data/WordData";
 import Flashcards from "./pages/Flashcards";
 import Home from "./pages/Home";
@@ -27,7 +28,8 @@ const App = () => {
 
   return (
     <Router>
-      <Container className="App">
+      <Container className="App position-relative">
+        <HomeButton />
         <Routes>
           <Route
             index
