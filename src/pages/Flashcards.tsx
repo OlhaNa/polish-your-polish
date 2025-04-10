@@ -112,10 +112,12 @@ const Flashcards = ({
 
           <p className="mb-1">
             Progress:{" "}
-            {computeProgress(
-              targetWordIndex ?? 0,
-              isChecking,
-              shuffledWords.length,
+            {Math.round(
+              computeProgress(
+                targetWordIndex ?? 0,
+                isChecking,
+                shuffledWords.length,
+              ),
             )}
             %
           </p>
